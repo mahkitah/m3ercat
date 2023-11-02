@@ -198,7 +198,7 @@ def transcode(flac_path: Path, lame_qual: Iterable[str], out_dir: Path):
     else:
         raise ValueError(f'What is this thing: {flac_path}')
 
-    with cf.ThreadPoolExecutor(max_workers=os.cpu_count() - 2) as executor:
+    with cf.ThreadPoolExecutor(max_workers=os.cpu_count()) as executor:
         futures = []
         for args in arg_gen:
             futures.append(executor.submit(process_flac_file, *args))
