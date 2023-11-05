@@ -11,21 +11,31 @@ from typing import Collection, Iterable, Iterator
 
 from mutagen import flac, id3, mp3
 
-
+# ######################################################
+#
+# Basic settings:
+#
+# Set the location of flac and lame programs:
 lame_prog = "D:\\Dowwn\\Lame3.100_64\\lame.exe"
 flac_prog = "D:\\Dowwn\\flac-1.3.4-win\\win64\\flac.exe"
-flac_folder_pattern = r'\[FLAC.*\]'  # = regular expression
+#
+# Regex pattern for input flac folder:
+flac_folder_pattern = r'\[FLAC.*\]'
+#
+# Above pattern will be replaced by this text:
 replace_folder_pattern_with = '[MP3 {qual}]'  # {qual} will be replaced by lame quality (V0, 320 etc.)
-
+#
+# Misc settings:
 copy_embedded_pics = True  # True or False
-flac_tags_not_to_copy = ('encoder',)
-copy_extensions = ('.jpg', '.jpeg', '.png', '.pdf', '.txt')
+copy_extensions = ('.jpg', '.jpeg', '.png', '.pdf', '.txt')  # set empty parentheses to not copy extra files
 default_lame_quality = ('b320', 'V0',)  # This is used when -q option is not used in command line.
-
+flac_tags_not_to_copy = ('encoder',)
+#
+# Advanced settings
 flac_options = ('-dsc',)
 lame_options = ('--quiet', '--add-id3v2')
 id3v2_version = 4  # 3 or 4
-
+#
 vorbis_to_id3_map = {
     'title':        'TIT2',
     'album':        'TALB',
@@ -47,7 +57,7 @@ vorbis_to_id3_map = {
     'label':        'TPUB',
     'isrc':         'TSRC',
 }
-################################################################
+##############################################################
 
 assert all(fr in id3.Frames for fr in vorbis_to_id3_map.values())
 folder_re = re.compile(flac_folder_pattern)
@@ -222,7 +232,7 @@ def parse_args() -> tuple[Path, Collection[str], Path, Path]:
     parser.add_argument('flac_path', help='Album folder or single flac file. '
                                           '(must be single file in combination with -c/--copy_to)')
     parser.add_argument('-o', '--out', help='Output folder (Does not need to exist). When omitted, output will be'
-                                            ' created as sibbling of the input.', metavar='')
+                                            ' created as sibling of the input.', metavar='')
     parser.add_argument('-q', action='append', choices=('b320', 'b256', 'b192', 'b128', 'V0', 'V1', 'V2', 'V3', 'V4'),
                         help=f'Lame bitrate setting. Can be used multiple times. '
                              f'Defaults to {" and ".join(default_lame_quality)}.')
