@@ -147,6 +147,9 @@ def copy_extra_files(path: Path, out_dirs: Iterable[Path]):
 
 
 def process_flac_file(flac_thing: flac.FLAC, tag_dict: dict, mp3_qual: str, mp3_file_path: Path):
+    if flac_thing.info.channels > 2:
+        raise ValueError(f'{flac_thing.filename} has {flac_thing.info.channels} channels. '
+                         f'This can\'t be converted to mp3.')
     flac_to_mp3(mp3_qual, flac_thing.filename, mp3_file_path)
     copy_tags(tag_dict, flac_thing, mp3_file_path)
 
