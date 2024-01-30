@@ -195,7 +195,7 @@ def mp3_dirs(album_dir: Path, lame_qual: Iterable[str], out_dir: Path) -> dict[s
     else:
         out = album_dir.with_name(dir_name)
 
-    return {q: out.with_name(out.name.format(qual=q.lstrip('b'))) for q in lame_qual}
+    return {q: out.with_name(out.name.replace('{qual}', q.lstrip('b'))) for q in lame_qual}
 
 
 def transcode(flac_path: Path, lame_qual: Iterable[str], out_dir: Path):
